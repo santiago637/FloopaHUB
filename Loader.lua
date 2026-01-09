@@ -9,20 +9,20 @@ local TweenService = game:GetService("TweenService")
 local player = Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 
--- Función de notificación
+-- Notificación segura
 local function notify(msg)
     pcall(function()
         StarterGui:SetCore("SendNotification", {Title="Floopa Hub", Text=msg, Duration=3})
     end)
 end
 
--- Crear GUI principal
+-- GUI principal
 local gui = Instance.new("ScreenGui", playerGui)
 gui.Name = "FloopaHubLoader"
 
 local frame = Instance.new("Frame", gui)
-frame.Size = UDim2.new(0, 320, 0, 200)
-frame.Position = UDim2.new(0.5, -160, 0.5, -100)
+frame.Size = UDim2.new(0, 340, 0, 220)
+frame.Position = UDim2.new(0.5, -170, 0.5, -110)
 frame.BackgroundColor3 = Color3.fromRGB(20,20,30)
 Instance.new("UICorner", frame).CornerRadius = UDim.new(0,12)
 
@@ -73,12 +73,12 @@ Instance.new("UICorner", btnSupport).CornerRadius = UDim.new(0,8)
 
 -- Eventos
 btnGetKey.MouseButton1Click:Connect(function()
-    setclipboard("https://tu-pagina.github.io/floopahub") -- tu página oficial
+    setclipboard("https://tu-pagina.github.io/floopahub") -- tu página oficial con LootLabs
     notify("Link copiado. Ábrelo en tu navegador para obtener la key.")
 end)
 
 btnSupport.MouseButton1Click:Connect(function()
-    setclipboard("https://discord.gg/tuServidor") -- tu Discord
+    setclipboard("https://discord.gg/SmRdT9TM") -- tu Discord oficial
     notify("Link de soporte copiado. Únete a nuestro Discord.")
 end)
 
