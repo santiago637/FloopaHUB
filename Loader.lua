@@ -74,7 +74,7 @@ Instance.new("UICorner", btnSupport).CornerRadius = UDim.new(0,8)
 
 -- Eventos
 btnGetKey.MouseButton1Click:Connect(function()
-    setclipboard("https://tu-pagina.github.io/floopahub") -- tu página oficial con LootLabs
+    setclipboard("https://loot-link.com/s?bwxRK29Q") -- tu página oficial con LootLabs
     notify("Link copiado. Ábrelo en tu navegador para obtener la key.")
 end)
 
@@ -89,7 +89,7 @@ btnSubmit.MouseButton1Click:Connect(function()
 
     -- Paso 1: Validar key o usuario VIP
     local validate = syn.request({
-        Url = "https://TU-SERVIDOR-RENDER.onrender.com/auth/validate",
+        Url = "https://scripts-m6a8.onrender.com/auth/validate",
         Method = "POST",
         Headers = {["Content-Type"] = "application/json"},
         Body = HttpService:JSONEncode({ key = key, user = player.Name })
@@ -102,7 +102,7 @@ btnSubmit.MouseButton1Click:Connect(function()
 
     -- Paso 2: Obtener exploit con token
     local exploitRes = syn.request({
-        Url = "https://TU-SERVIDOR-RENDER.onrender.com/exploit/get",
+        Url = "https://scripts-m6a8.onrender.com/exploit/get",
         Method = "GET",
         Headers = {["Authorization"] = "Bearer " .. data.token}
     })
