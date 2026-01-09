@@ -1,6 +1,6 @@
 document.getElementById("getKey").addEventListener("click", () => {
   // Redirigir a LootLabs
-  window.open("https://lootlabs.net/link/TU-LINK-OFICIAL", "_blank");
+  window.open("https://loot-link.com/s?bwxRK29Q", "_blank");
   document.getElementById("keyBox").classList.remove("hidden");
 });
 
