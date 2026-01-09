@@ -1,21 +1,20 @@
 // Configuración
 const LOOTLABS_LINK = "https://loot-link.com/s?bwxRK29Q"; // tu enlace de LootLabs
-const DESTINATION_AFTER_LOOTLABS = "https://santiago637.github.io/FloopaHUB/"; // tu GitHub Pages
 const SESSION_KEY = "fh_session";
 const SESSION_TTL_MS = 1000 * 60 * 30; // 30 minutos
+const REDIRECT_DELAY = 5; // segundos
 
-// Anuncios internos (puedes usar imágenes o videos embebidos)
+// Anuncios internos (mezcla de imagen y YouTube)
 const internalAds = [
-  { type: "image", src: "assets/ad1.png", alt: "Ad 1" },
-  { type: "image", src: "assets/ad2.png", alt: "Ad 2" },
+  { type: "image", src: "assets/ad1.png", alt: "FloopaHub promo" },
   { type: "youtube", src: "https://www.youtube.com/embed/dQw4w9WgXcQ" },
-  { type: "image", src: "assets/ad3.png", alt: "Ad 3" }
+  { type: "image", src: "assets/ad2.png", alt: "Oferta limitada" },
+  { type: "image", src: "assets/ad3.png", alt: "Actualización v2.0" }
 ];
 
 // Utilidades de sesión
 function setSession(tag) {
-  const payload = { tag, ts: Date.now() };
-  localStorage.setItem(SESSION_KEY, JSON.stringify(payload));
+  localStorage.setItem(SESSION_KEY, JSON.stringify({ tag, ts: Date.now() }));
 }
 function hasValidSession() {
   const raw = localStorage.getItem(SESSION_KEY);
@@ -23,52 +22,52 @@ function hasValidSession() {
   try {
     const { ts } = JSON.parse(raw);
     return Date.now() - ts < SESSION_TTL_MS;
-  } catch {
-    return false;
-  }
+  } catch { return false; }
 }
-function clearSession() {
-  localStorage.removeItem(SESSION_KEY);
-}
+function clearSession() { localStorage.removeItem(SESSION_KEY); }
 
-// Anti-bypass: si el usuario entra directo sin sesión, mostrar guardBox y redirigir
+// Anti-bypass: si entra directo sin sesión, mostrar guardBox y redirigir
 function guardAccess() {
   const guardBox = document.getElementById("guardBox");
   if (!hasValidSession()) {
     guardBox.classList.remove("hidden");
-    // Redirigir a LootLabs si intenta entrar directo
-    setTimeout(() => {
-      window.location.href = LOOTLABS_LINK;
-    }, 2500);
+    setTimeout(() => { window.location.href = LOOTLABS_LINK; }, 2500);
+  } else {
+    guardBox.classList.add("hidden");
   }
 }
 
-// Render de anuncio interno
+// Modal helpers
+function openModal() {
+  document.getElementById("modal").classList.remove("hidden");
+}
+function closeModal() {
+  document.getElementById("modal").classList.add("hidden");
+  document.getElementById("adContent").innerHTML = "";
+}
 function renderInternalAd() {
-  const adBox = document.getElementById("adBox");
   const adContent = document.getElementById("adContent");
   adContent.innerHTML = "";
   const ad = internalAds[Math.floor(Math.random() * internalAds.length)];
   if (ad.type === "image") {
     const img = document.createElement("img");
-    img.src = ad.src; img.alt = ad.alt || "Ad";
+    img.src = ad.src; img.alt = ad.alt || "Anuncio";
     adContent.appendChild(img);
   } else if (ad.type === "youtube") {
     const iframe = document.createElement("iframe");
     iframe.width = "560"; iframe.height = "315";
-    iframe.src = ad.src; iframe.title = "YouTube video";
+    iframe.src = ad.src; iframe.title = "Video";
     iframe.frameBorder = "0";
     iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
     iframe.allowFullscreen = true;
     adContent.appendChild(iframe);
   }
-  adBox.classList.remove("hidden");
 }
 
 // Countdown y redirección a LootLabs
 function startCountdownAndRedirect() {
   const countdownEl = document.getElementById("countdown");
-  let t = 5;
+  let t = REDIRECT_DELAY;
   countdownEl.textContent = String(t);
   const iv = setInterval(() => {
     t -= 1;
@@ -76,6 +75,7 @@ function startCountdownAndRedirect() {
     if (t <= 0) {
       clearInterval(iv);
       window.open(LOOTLABS_LINK, "_blank");
+      closeModal();
     }
   }, 1000);
 }
@@ -87,23 +87,26 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("btnTrial").addEventListener("click", () => {
     setSession("trial");
     renderInternalAd();
+    openModal();
     startCountdownAndRedirect();
   });
 
   document.getElementById("btnPermanent").addEventListener("click", () => {
     setSession("permanent");
     renderInternalAd();
+    openModal();
     startCountdownAndRedirect();
   });
 
-  // Si el usuario vuelve desde LootLabs, refresca sesión y oculta guardBox
-  const guardBox = document.getElementById("guardBox");
-  if (hasValidSession()) {
-    guardBox.classList.add("hidden");
-  }
+  document.getElementById("skipBtn").addEventListener("click", () => {
+    window.open(LOOTLABS_LINK, "_blank");
+    closeModal();
+  });
+
+  document.getElementById("modalClose").addEventListener("click", () => {
+    closeModal();
+  });
 });
 
-// Opcional: al cerrar la pestaña, limpiar sesión para forzar nuevo paso por LootLabs
-window.addEventListener("beforeunload", () => {
-  clearSession();
-});
+// Limpieza de sesión al cerrar (opcional)
+window.addEventListener("beforeunload", clearSession);
