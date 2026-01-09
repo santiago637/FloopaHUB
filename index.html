@@ -1,38 +1,56 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>FloopaHub • Key System</title>
   <link rel="stylesheet" href="styles.css"/>
 </head>
 <body>
   <header class="header">
-    <h1>FloopaHub • Key System</h1>
-    <p>Elige tu acceso y completa el proceso para obtener tu clave.</p>
+    <div class="brand">
+      <img src="assets/logo.png" alt="FloopaHub logo" class="logo"/>
+      <h1>FloopaHub • Key System</h1>
+    </div>
+    <p class="subtitle">Obtén tu clave para usarla en Roblox. Flujo guiado, sin confusiones.</p>
   </header>
 
   <main class="container">
     <section class="card">
       <h2>Selecciona tu acceso</h2>
-      <div class="buttons">
-        <button id="btnTrial" class="btn primary">Obtener Trial Key</button>
-        <button id="btnPermanent" class="btn success">Obtener Permanent Key</button>
+      <div class="grid">
+        <div class="tile">
+          <h3>Trial Key</h3>
+          <p>Acceso temporal para probar funciones.</p>
+          <button id="btnTrial" class="btn primary" aria-label="Obtener Trial Key">Obtener Trial Key</button>
+        </div>
+        <div class="tile">
+          <h3>Permanent Key</h3>
+          <p>Acceso completo y permanente.</p>
+          <button id="btnPermanent" class="btn success" aria-label="Obtener Permanent Key">Obtener Permanent Key</button>
+        </div>
       </div>
-      <p class="note">La clave se usa dentro de Roblox. No necesitas pegarla aquí.</p>
+      <p class="note">La clave se usa dentro de Roblox. Aquí solo guiamos el proceso.</p>
     </section>
 
-    <section id="adBox" class="card hidden">
-      <h3>🎯 Mira este anuncio antes de continuar</h3>
-      <div id="adContent"></div>
-      <p class="timer">Redirigiendo en <span id="countdown">5</span>s…</p>
-    </section>
-
-    <section id="guardBox" class="card hidden">
+    <section id="guardBox" class="card hidden" role="alert">
       <h3>Acceso controlado</h3>
       <p>Para continuar, usa los botones de arriba. El acceso directo está bloqueado.</p>
     </section>
   </main>
+
+  <!-- Modal de anuncio interno -->
+  <div id="modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-content">
+      <button id="modalClose" class="icon-btn" aria-label="Cerrar">✕</button>
+      <h3 id="modalTitle">🎯 Mira esto antes de continuar</h3>
+      <div id="adContent" class="ad-content"></div>
+      <div class="modal-footer">
+        <p class="timer">Redirigiendo en <span id="countdown">5</span>s…</p>
+        <button id="skipBtn" class="btn ghost" aria-label="Saltar y continuar">Saltar</button>
+      </div>
+    </div>
+  </div>
 
   <footer class="footer">
     <small>© FloopaHub — Sistema de claves con validación en backend</small>
