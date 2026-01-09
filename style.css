@@ -1,7 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap');
+
 :root {
-  --bg: #0a0c10;          /* negro profundo */
-  --card: #11151c;        /* gris oscuro */
-  --text: #e6f0ff;        /* azul muy claro */
+  --bg: #05070d;          /* negro profundo */
+  --card: #0d111a;        /* gris oscuro */
+  --text: #eaf4ff;        /* azul muy claro */
   --muted: #7a8ca3;       /* gris azulado */
   --primary: #1e90ff;     /* azul brillante */
   --secondary: #00bfff;   /* azul neón */
@@ -18,24 +20,25 @@ body {
 }
 
 .header {
-  padding: 32px;
+  padding: 40px 20px;
   text-align: center;
-  background: linear-gradient(90deg, var(--accent), var(--secondary));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
 }
 .header h1 {
-  font-size: 2.2rem;
+  font-size: 2.5rem;
   font-weight: 700;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   letter-spacing: 2px;
 }
 .subtitle {
   color: var(--muted);
-  margin-top: 8px;
+  margin-top: 10px;
+  font-size: 1.1rem;
 }
 
 .container {
-  max-width: 1000px;
+  max-width: 1100px;
   margin: 0 auto;
   padding: 24px;
 }
@@ -43,71 +46,73 @@ body {
 .card {
   background: var(--card);
   border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 20px;
-  margin-bottom: 20px;
-  box-shadow: 0 0 20px rgba(0, 191, 255, 0.2);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 0 25px rgba(0, 191, 255, 0.25);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 .card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 0 30px rgba(30, 144, 255, 0.4);
+  transform: translateY(-6px);
+  box-shadow: 0 0 40px rgba(30, 144, 255, 0.6);
 }
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 20px;
 }
 
 .tile {
-  background: #0f141b;
+  background: #0a0f18;
   border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 16px;
+  border-radius: 14px;
+  padding: 20px;
   text-align: center;
-  transition: background 0.3s ease;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 .tile:hover {
-  background: #101a25;
+  background: #0f1622;
+  box-shadow: 0 0 20px rgba(0, 191, 255, 0.4);
 }
 
 .btn {
-  padding: 12px 18px;
+  padding: 14px 20px;
   border: none;
-  border-radius: 10px;
+  border-radius: 12px;
   cursor: pointer;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 1rem;
   transition: all 0.3s ease;
 }
 .btn.primary {
   background: var(--primary);
   color: #fff;
-  box-shadow: 0 0 12px rgba(30, 144, 255, 0.6);
+  box-shadow: 0 0 15px rgba(30, 144, 255, 0.7);
 }
 .btn.primary:hover {
   background: var(--secondary);
-  box-shadow: 0 0 20px rgba(0, 191, 255, 0.8);
+  box-shadow: 0 0 25px rgba(0, 191, 255, 1);
 }
 .btn.success {
   background: var(--accent);
   color: #fff;
-  box-shadow: 0 0 12px rgba(0, 119, 255, 0.6);
+  box-shadow: 0 0 15px rgba(0, 119, 255, 0.7);
 }
 .btn.success:hover {
   background: var(--secondary);
-  box-shadow: 0 0 20px rgba(0, 191, 255, 0.8);
+  box-shadow: 0 0 25px rgba(0, 191, 255, 1);
 }
 
 .note {
   color: var(--muted);
-  margin-top: 8px;
+  margin-top: 12px;
+  font-size: 0.95rem;
 }
 
 .footer {
   text-align: center;
-  padding: 24px;
+  padding: 28px;
   color: var(--muted);
   border-top: 1px solid var(--border);
   font-size: 0.9rem;
@@ -117,7 +122,7 @@ body {
 .modal {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.7);
+  background: rgba(0,0,0,0.8);
   display: grid;
   place-items: center;
   z-index: 1000;
@@ -126,17 +131,18 @@ body {
   width: min(720px, 92vw);
   background: var(--card);
   border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 20px;
-  box-shadow: 0 0 25px rgba(0, 191, 255, 0.4);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 0 35px rgba(0, 191, 255, 0.6);
 }
 .modal-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 12px;
+  margin-top: 16px;
 }
 .timer {
   color: var(--secondary);
   font-weight: bold;
+  font-size: 1.1rem;
 }
