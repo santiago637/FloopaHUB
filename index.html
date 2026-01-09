@@ -22,15 +22,31 @@
         <div class="tile">
           <h3>Trial Key</h3>
           <p>Acceso temporal para probar funciones.</p>
-          <button id="btnTrial" class="btn primary" aria-label="Obtener Trial Key">Obtener Trial Key</button>
+          <button id="btnTrial" class="btn primary">Obtener Trial Key</button>
         </div>
         <div class="tile">
           <h3>Permanent Key</h3>
           <p>Acceso completo y permanente.</p>
-          <button id="btnPermanent" class="btn success" aria-label="Obtener Permanent Key">Obtener Permanent Key</button>
+          <button id="btnPermanent" class="btn success">Obtener Permanent Key</button>
         </div>
       </div>
       <p class="note">La clave se usa dentro de Roblox. Aquí solo guiamos el proceso.</p>
+    </section>
+
+    <!-- Formulario Permanent Key -->
+    <section id="permForm" class="card hidden">
+      <h3>Validación Permanent Key</h3>
+      <p>Ingresa tu username de Roblox para vincular tu acceso permanente:</p>
+      <input type="text" id="robloxUser" placeholder="Tu username de Roblox" class="input"/>
+      <button id="submitPerm" class="btn success">Confirmar</button>
+      <p id="permStatus" class="note"></p>
+    </section>
+
+    <!-- Resultado Trial Key -->
+    <section id="trialResult" class="card hidden">
+      <h3>Tu Trial Key</h3>
+      <p id="trialKey" class="key-box"></p>
+      <p class="note">Copia esta key y pégala en el loader de Roblox.</p>
     </section>
 
     <section id="guardBox" class="card hidden" role="alert">
@@ -38,19 +54,6 @@
       <p>Para continuar, usa los botones de arriba. El acceso directo está bloqueado.</p>
     </section>
   </main>
-
-  <!-- Modal de anuncio interno -->
-  <div id="modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-    <div class="modal-content">
-      <button id="modalClose" class="icon-btn" aria-label="Cerrar">✕</button>
-      <h3 id="modalTitle">🎯 Mira esto antes de continuar</h3>
-      <div id="adContent" class="ad-content"></div>
-      <div class="modal-footer">
-        <p class="timer">Redirigiendo en <span id="countdown">5</span>s…</p>
-        <button id="skipBtn" class="btn ghost" aria-label="Saltar y continuar">Saltar</button>
-      </div>
-    </div>
-  </div>
 
   <footer class="footer">
     <small>© FloopaHub — Sistema de claves con validación en backend</small>
