@@ -13,7 +13,7 @@ document.getElementById("validateKey").addEventListener("click", async () => {
   }
 
   try {
-    const res = await fetch(`https://TU-SERVIDOR-RENDER.onrender.com/validate?key=${key}&user=${user}`);
+    const res = await fetch(`https://scripts-m6a8.onrender.com/validate?key=${key}&user=${user}`);
     const data = await res.json();
 
     if (data.ok) {
