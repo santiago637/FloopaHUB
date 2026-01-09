@@ -1,8 +1,9 @@
--- Floopa Hub Loader
+-- Floopa Hub Loader (v3.5)
 local gv = getgenv()
 gv.FloopaHub = gv.FloopaHub or {}
-gv.FloopaHub.Version = "2.5"
+gv.FloopaHub.Version = "3.5"
 
+local HttpService = game:GetService("HttpService")
 local Players = game:GetService("Players")
 local StarterGui = game:GetService("StarterGui")
 local TweenService = game:GetService("TweenService")
@@ -86,19 +87,36 @@ btnSubmit.MouseButton1Click:Connect(function()
     local key = box.Text
     if key == "" then return notify("Introduce una key primero.") end
 
-    local url = "https://floopahub-server.santiago.repl.co/validate?key="..key
-    local ok, res = pcall(function() return game:HttpGet(url) end)
+    -- Paso 1: Validar key o usuario VIP
+    local validate = syn.request({
+        Url = "https://TU-SERVIDOR-RENDER.onrender.com/auth/validate",
+        Method = "POST",
+        Headers = {["Content-Type"] = "application/json"},
+        Body = HttpService:JSONEncode({ key = key, user = player.Name })
+    })
 
-    if ok and res and #res > 0 then
-        local fOk, fn = pcall(loadstring, res)
-        if fOk and type(fn) == "function" then
+    local data = HttpService:JSONDecode(validate.Body)
+    if not data.success then
+        return notify("Key inválida o acceso denegado.")
+    end
+
+    -- Paso 2: Obtener exploit con token
+    local exploitRes = syn.request({
+        Url = "https://TU-SERVIDOR-RENDER.onrender.com/exploit/get",
+        Method = "GET",
+        Headers = {["Authorization"] = "Bearer " .. data.token}
+    })
+
+    if exploitRes.StatusCode == 200 then
+        local ok, fn = pcall(loadstring, exploitRes.Body)
+        if ok and type(fn) == "function" then
             fn()
             notify("Key válida. HUB cargado.")
             gui:Destroy()
         else
-            notify("Error al ejecutar script.")
+            notify("Error al ejecutar exploit.")
         end
     else
-        notify("Key inválida o trial expirado.")
+        notify("Error al obtener exploit.")
     end
 end)
