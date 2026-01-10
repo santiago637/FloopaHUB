@@ -26,20 +26,11 @@
         </div>
         <div class="tile">
           <h3>Permanent Key</h3>
-          <p>Acceso completo y permanente.</p>
+          <p>Acceso completo y permanente (requiere pago).</p>
           <button id="btnPermanent" class="btn success">Obtener Permanent Key</button>
         </div>
       </div>
       <p class="note">La clave se usa dentro de Roblox. Aquí solo guiamos el proceso.</p>
-    </section>
-
-    <!-- Formulario Permanent Key -->
-    <section id="permForm" class="card hidden">
-      <h3>Validación Permanent Key</h3>
-      <p>Ingresa tu username de Roblox para vincular tu acceso permanente:</p>
-      <input type="text" id="robloxUser" placeholder="Tu username de Roblox" class="input"/>
-      <button id="submitPerm" class="btn success">Confirmar</button>
-      <p id="permStatus" class="note"></p>
     </section>
 
     <!-- Resultado Trial Key -->
@@ -49,9 +40,11 @@
       <p class="note">Copia esta key y pégala en el loader de Roblox.</p>
     </section>
 
-    <section id="guardBox" class="card hidden" role="alert">
-      <h3>Acceso controlado</h3>
-      <p>Para continuar, usa los botones de arriba. El acceso directo está bloqueado.</p>
+    <!-- Resultado Permanent Key -->
+    <section id="permResult" class="card hidden">
+      <h3>Tu Permanent Key</h3>
+      <p id="permKey" class="key-box"></p>
+      <p class="note">Ya puedes usar tu acceso permanente en Roblox.</p>
     </section>
   </main>
 
