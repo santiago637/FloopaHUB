@@ -1,79 +1,52 @@
 const LOOTLABS_LINK = "https://loot-link.com/s?bwxRK29Q";
-const SESSION_KEY = "fh_session";
-const SESSION_TTL_MS = 1000 * 60 * 30; // 30 minutos
+const PAYPAL_CHECKOUT = "https://tu-backend.com/paypal-checkout"; // URL de tu backend
 
-// Anuncios internos
-const internalAds = [
-  { type: "image", src: "assets/ad1.png", alt: "Promo" },
-  { type: "youtube", src: "https://www.youtube.com/embed/dQw4w9WgXcQ" }
-];
-
-// Sesión
-function setSession(tag) {
-  localStorage.setItem(SESSION_KEY, JSON.stringify({ tag, ts: Date.now() }));
-}
-function hasValidSession() {
-  const raw = localStorage.getItem(SESSION_KEY);
-  if (!raw) return false;
-  const { ts } = JSON.parse(raw);
-  return Date.now() - ts < SESSION_TTL_MS;
-}
-function clearSession() { localStorage.removeItem(SESSION_KEY); }
-
-// Modal helpers
-function openModal() { document.getElementById("modal").classList.remove("hidden"); }
-function closeModal() { document.getElementById("modal").classList.add("hidden"); }
-
-function renderInternalAd() {
-  const adContent = document.getElementById("adContent");
-  adContent.innerHTML = "";
-  const ad = internalAds[Math.floor(Math.random() * internalAds.length)];
-  if (ad.type === "image") {
-    adContent.innerHTML = `<img src="${ad.src}" alt="${ad.alt}"/>`;
-  } else if (ad.type === "youtube") {
-    adContent.innerHTML = `<iframe width="560" height="315" src="${ad.src}" frameborder="0" allowfullscreen></iframe>`;
-  }
-}
-
-function startCountdownAndRedirect() {
-  const countdownEl = document.getElementById("countdown");
-  let t = 5;
-  countdownEl.textContent = t;
-  const iv = setInterval(() => {
-    t--;
-    countdownEl.textContent = t;
-    if (t <= 0) {
-      clearInterval(iv);
-      window.open(LOOTLABS_LINK, "_blank");
-      closeModal();
+// Generar key en formato xxxx-xxxx-xxxx
+function generateKey() {
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  function block(len) {
+    let out = "";
+    for (let i = 0; i < len; i++) {
+      out += chars.charAt(Math.floor(Math.random() * chars.length));
     }
-  }, 1000);
+    return out;
+  }
+  return `${block(4)}-${block(4)}-${block(4)}`;
 }
 
-// Eventos
 document.addEventListener("DOMContentLoaded", () => {
-  // Trial Key → anuncio + redirección
-  document.getElementById("btnTrial").addEventListener("click", () => {
-    setSession("trial");
-    renderInternalAd();
-    openModal();
-    startCountdownAndRedirect();
+  const btnTrial = document.getElementById("btnTrial");
+  const btnPermanent = document.getElementById("btnPermanent");
+
+  // Trial Key → redirige a LootLabs
+  btnTrial.addEventListener("click", () => {
+    window.location.href = LOOTLABS_LINK;
   });
 
-  // Permanent Key → solo marcar sesión, sin anuncio ni redirección
-  document.getElementById("btnPermanent").addEventListener("click", () => {
-    setSession("permanent");
-    alert("✅ Acceso permanente habilitado. Usa tu key en Roblox.");
+  // Permanent Key → redirige a PayPal checkout
+  btnPermanent.addEventListener("click", () => {
+    window.location.href = PAYPAL_CHECKOUT;
   });
 
-  // Botón de saltar anuncio
-  document.getElementById("skipBtn").addEventListener("click", () => {
-    window.open(LOOTLABS_LINK, "_blank");
-    closeModal();
-  });
+  // Detectar si LootLabs devolvió al usuario
+  const params = new URLSearchParams(window.location.search);
+  if (params.get("from") === "lootlabs") {
+    const key = generateKey();
+    document.getElementById("trialKey").textContent = key;
+    document.getElementById("trialResult").classList.remove("hidden");
+  }
 
-  document.getElementById("modalClose").addEventListener("click", closeModal);
+  // Detectar si PayPal devolvió al usuario con pago confirmado
+  if (params.get("payment") === "success") {
+    fetch("https://tu-backend.com/get-permanent-key")
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById("permKey").textContent = data.key;
+        document.getElementById("permResult").classList.remove("hidden");
+      })
+      .catch(() => {
+        document.getElementById("permResult").classList.remove("hidden");
+        document.getElementById("permKey").textContent = "❌ Error al validar el pago.";
+      });
+  }
 });
-
-// Limpieza de sesión al cerrar
-window.addEventListener("beforeunload", clearSession);
