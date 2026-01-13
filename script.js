@@ -1,28 +1,23 @@
 const LOOTLABS_LINK = "https://loot-link.com/s?bwxRK29Q&from=lootlabs";
 const LINKVERTISE_LINK = "https://linkvertise.com/12345/floopa-key?from=linkvertise";
 
-// Ventana de validez para la verificación en ms (30 minutos)
-const VERIFICATION_WINDOW_MS = 30 * 60 * 1000;
+const VERIFICATION_WINDOW_MS = 30 * 60 * 1000; // 30 minutos
 const LS_KEY_PENDING = "floopahub_pending_verification";
 
-/* Generar key en formato XXXX-XXXX-XXXX */
+/* Generador seguro de key (cliente-side, no sustituye validación backend) */
 function generateKey() {
-  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  function block(len) {
-    let out = "";
-    for (let i = 0; i < len; i++) {
-      out += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    return out;
-  }
+  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789"; // sin ambigüedades
+  const block = (n) => Array.from({length:n}, () => chars[Math.floor(Math.random()*chars.length)]).join('');
   return `${block(4)}-${block(4)}-${block(4)}`;
 }
 
-/* LocalStorage helpers */
+/* localStorage helpers */
 function markPendingVerification(platform) {
-  const payload = { platform, ts: Date.now() };
-  try { localStorage.setItem(LS_KEY_PENDING, JSON.stringify(payload)); }
-  catch (e) { console.warn("localStorage no disponible", e); }
+  try {
+    localStorage.setItem(LS_KEY_PENDING, JSON.stringify({ platform, ts: Date.now() }));
+  } catch (e) {
+    console.warn("localStorage no disponible", e);
+  }
 }
 function readPendingVerification() {
   try {
@@ -35,29 +30,28 @@ function readPendingVerification() {
       return { expired: true };
     }
     return obj;
-  } catch (e) { console.warn("Error leyendo localStorage", e); return null; }
+  } catch (e) {
+    console.warn("Error leyendo localStorage", e);
+    return null;
+  }
 }
 function clearPendingVerification() {
   try { localStorage.removeItem(LS_KEY_PENDING); } catch (e) {}
 }
 
 /* UI helpers */
-function showElement(id) {
+const show = id => {
   const el = document.getElementById(id);
   if (!el) return;
   el.classList.remove("hidden");
   el.setAttribute("aria-hidden", "false");
-}
-function hideElement(id) {
+};
+const hide = id => {
   const el = document.getElementById(id);
   if (!el) return;
   el.classList.add("hidden");
   el.setAttribute("aria-hidden", "true");
-}
-function setNote(text) {
-  const note = document.getElementById("startNote");
-  if (note) note.textContent = text;
-}
+};
 
 /* Copiar al portapapeles */
 function setupCopyButton() {
@@ -68,47 +62,46 @@ function setupCopyButton() {
     try {
       await navigator.clipboard.writeText(trialKey.textContent || "");
       btn.textContent = "Copiado";
-      setTimeout(() => (btn.textContent = "Copiar key"), 2000);
+      setTimeout(() => (btn.textContent = "Copiar key"), 1800);
     } catch (e) {
       btn.textContent = "Error copiar";
-      setTimeout(() => (btn.textContent = "Copiar key"), 2000);
+      setTimeout(() => (btn.textContent = "Copiar key"), 1800);
     }
   });
 }
 
-/* Botón Hecho vuelve a pantalla inicial limpia */
+/* Botón Hecho */
 function setupDoneButton() {
   const btn = document.getElementById("btnDone");
   if (!btn) return;
   btn.addEventListener("click", () => {
-    hideElement("trialResult");
-    // limpiar cualquier marca pendiente por seguridad
+    hide("trialResult");
     clearPendingVerification();
-    // mostrar pantalla inicial
-    showElement("startScreen");
-    setNote("La clave se usa dentro de Roblox. Aquí solo guiamos el proceso.");
+    show("startScreen");
+    const note = document.getElementById("startNote");
+    if (note) note.textContent = "La clave se usa dentro de Roblox. Aquí solo guiamos el proceso.";
   });
 }
 
-/* Mostrar mensaje de error/instrucción en el área de resultado */
+/* Mostrar mensaje de error/instrucción en área de resultado */
 function showVerificationError(message) {
-  hideElement("startScreen");
-  hideElement("platformChoice");
-  showElement("trialResult");
+  hide("startScreen");
+  hide("platformChoice");
+  show("trialResult");
   const trialKey = document.getElementById("trialKey");
   if (trialKey) trialKey.textContent = message || "No se pudo verificar tu visita. Reintenta el proceso.";
 }
 
 /* Mostrar la key tras verificación correcta */
 function showKeyUI(key) {
-  hideElement("startScreen");
-  hideElement("platformChoice");
+  hide("startScreen");
+  hide("platformChoice");
   const trialKey = document.getElementById("trialKey");
   if (trialKey) trialKey.textContent = key;
-  showElement("trialResult");
+  show("trialResult");
 }
 
-/* Inicialización principal */
+/* Inicialización */
 document.addEventListener("DOMContentLoaded", () => {
   const btnTrial = document.getElementById("btnTrial");
   const btnLinkvertise = document.getElementById("btnLinkvertise");
@@ -116,16 +109,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (!btnTrial) return;
 
-  // 1) Al pulsar Trial Key mostrar opciones
+  // Mostrar opciones SOLO cuando el usuario pulsa el botón
   btnTrial.addEventListener("click", () => {
-    hideElement("startScreen");
-    showElement("platformChoice");
-    // mensaje contextual
+    hide("startScreen");
+    show("platformChoice");
     const pendingNote = document.getElementById("pendingNote");
     if (pendingNote) pendingNote.hidden = true;
   });
 
-  // 2) Al elegir plataforma marcar y redirigir
+  // Elegir plataforma: marcar y redirigir
   if (btnLinkvertise) {
     btnLinkvertise.addEventListener("click", (e) => {
       e.preventDefault();
@@ -141,19 +133,19 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // 3) Al volver comprobar parámetros URL y validar con localStorage
+  // Al volver: procesar solo si hay ?from=lootlabs o ?from=linkvertise
   const params = new URLSearchParams(window.location.search);
-  const from = params.get("from"); // 'lootlabs' o 'linkvertise'
+  const from = params.get("from");
 
   if (from === "lootlabs" || from === "linkvertise") {
     const pending = readPendingVerification();
 
     if (!pending) {
-      showVerificationError("No se detectó una verificación previa o expiró. Vuelve a pulsar 'Obtener Trial Key' y completa el proceso en la plataforma.");
+      showVerificationError("No se detectó una verificación previa o expiró. Vuelve a pulsar 'Obtener Trial Key' y completa el proceso.");
       return;
     }
     if (pending.expired) {
-      showVerificationError("La verificación expiró. Solicita la Trial Key de nuevo y completa el proceso en la plataforma.");
+      showVerificationError("La verificación expiró. Solicita la Trial Key de nuevo y completa el proceso.");
       return;
     }
     if (pending.platform !== from) {
@@ -161,7 +153,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // OK: generar key, limpiar estado y mostrar
+    // Todo OK: generar key, limpiar estado y mostrar
     const key = generateKey();
     clearPendingVerification();
     showKeyUI(key);
@@ -170,19 +162,14 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  // 4) Si hay una marca pendiente pero no hay 'from' en URL, mostrar instrucción
+  // Si hay marca pendiente pero NO hay 'from' en URL, no mostrar elección automáticamente.
   const pending = readPendingVerification();
   if (pending && !pending.expired) {
-    hideElement("startScreen");
-    showElement("platformChoice");
-    const pendingNote = document.getElementById("pendingNote");
-    if (pendingNote) {
-      pendingNote.hidden = false;
-      pendingNote.textContent = `Has iniciado el proceso en ${pending.platform}. Completa la verificación en esa plataforma y vuelve aquí.`;
-    }
+    const note = document.getElementById("startNote");
+    if (note) note.textContent = `Has iniciado el proceso en ${pending.platform}. Completa la verificación en esa plataforma y vuelve aquí.`;
   }
 
-  // Inicializar botones auxiliares si la key ya estuviera presente
+  // Inicializar botones auxiliares
   setupCopyButton();
   setupDoneButton();
 });
