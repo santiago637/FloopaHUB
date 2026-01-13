@@ -18,7 +18,8 @@
   </header>
 
   <main class="container">
-    <section class="card">
+    <!-- Pantalla inicial -->
+    <section id="startScreen" class="card">
       <h2>Acceso disponible</h2>
       <div class="tile">
         <h3>Trial Key</h3>
@@ -28,14 +29,7 @@
       <p class="note">La clave se usa dentro de Roblox. Aquí solo guiamos el proceso.</p>
     </section>
 
-    <!-- Selección de plataforma -->
-    <section id="platformChoice" class="card hidden">
-      <h3>Elige cómo obtener tu Trial Key</h3>
-      <button id="btnLinkvertise" class="btn option">Linkvertise</button>
-      <button id="btnLootlabs" class="btn option">LootLabs</button>
-    </section>
-
-    <!-- Resultado Trial Key -->
+    <!-- Resultado Trial Key (se muestra en reemplazo) -->
     <section id="trialResult" class="card hidden">
       <h3>Tu Trial Key</h3>
       <p id="trialKey" class="key-box"></p>
@@ -47,6 +41,34 @@
     <small>© FloopaHub — Sistema de claves con validación en backend</small>
   </footer>
 
-  <script src="script.js"></script>
+  <script>
+    // Generador de key
+    function generateKey() {
+      const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+      function block(len) {
+        let out = "";
+        for (let i = 0; i < len; i++) {
+          out += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        return out;
+      }
+      return `${block(4)}-${block(4)}-${block(4)}`;
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const btnTrial = document.getElementById("btnTrial");
+      const startScreen = document.getElementById("startScreen");
+      const trialResult = document.getElementById("trialResult");
+      const trialKey = document.getElementById("trialKey");
+
+      btnTrial.addEventListener("click", () => {
+        // Ocultar pantalla inicial
+        startScreen.classList.add("hidden");
+        // Mostrar resultado con la key generada
+        trialKey.textContent = generateKey();
+        trialResult.classList.remove("hidden");
+      });
+    });
+  </script>
 </body>
 </html>
