@@ -11,8 +11,7 @@
   <!-- Estilos externos -->
   <link rel="stylesheet" href="styles.css">
 
-  <meta name="description" content="Obtén tu Trial Key para usar en Roblox. Elige Linkvertise o LootLabs y recibe la key tras la verificación." />
-  <meta name="theme-color" content="#0d111a" />
+  <meta name="description" content="Flujo seguro para obtener Trial Key: elige Linkvertise o LootLabs y recibe la key tras verificación." />
 </head>
 <body>
   <header class="header" role="banner">
@@ -20,11 +19,11 @@
       <img src="assets/logo.png" alt="FloopaHub logo" class="logo" />
       <h1>FloopaHub • Key System</h1>
     </div>
-    <p class="subtitle">Obtén tu clave para usarla en Roblox. Flujo guiado, sin confusiones.</p>
+    <p class="subtitle">Obtén tu clave para usarla en Roblox. Flujo guiado y seguro.</p>
   </header>
 
   <main class="container" id="main" role="main">
-    <!-- Pantalla inicial: solo aquí está el botón Trial Key -->
+    <!-- Pantalla inicial -->
     <section id="startScreen" class="card" aria-labelledby="startTitle">
       <h2 id="startTitle">Acceso disponible</h2>
 
@@ -39,7 +38,7 @@
       <p class="note" id="startNote">La clave se usa dentro de Roblox. Aquí solo guiamos el proceso.</p>
     </section>
 
-    <!-- Elección de plataforma: aparece solo después de presionar Obtener Trial Key -->
+    <!-- Elección de plataforma (oculta por defecto) -->
     <section id="platformChoice" class="card hidden" aria-labelledby="platformTitle" aria-hidden="true">
       <h2 id="platformTitle">Elige cómo verificar</h2>
       <p class="note">Selecciona la plataforma donde completarás la verificación. Volverás aquí automáticamente cuando termines.</p>
@@ -48,13 +47,13 @@
         <div class="tile" role="listitem">
           <h3>Linkvertise</h3>
           <p class="note">Completa el flujo en Linkvertise y vuelve a esta página.</p>
-          <button id="btnLinkvertise" class="btn option" type="button" aria-label="Ir a Linkvertise">Ir a Linkvertise</button>
+          <button id="btnLinkvertise" class="btn option" type="button">Ir a Linkvertise</button>
         </div>
 
         <div class="tile" role="listitem">
           <h3>LootLabs</h3>
           <p class="note">Completa el flujo en LootLabs y vuelve a esta página.</p>
-          <button id="btnLootlabs" class="btn option" type="button" aria-label="Ir a LootLabs">Ir a LootLabs</button>
+          <button id="btnLootlabs" class="btn option" type="button">Ir a LootLabs</button>
         </div>
       </div>
 
