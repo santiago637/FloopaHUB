@@ -8,16 +8,15 @@
   <!-- Tipografías -->
   <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
 
-  <!-- Estilos externos (tu styles.css) -->
+  <!-- Estilos externos -->
   <link rel="stylesheet" href="styles.css">
 
-  <!-- Metadatos mínimos para accesibilidad y SEO -->
-  <meta name="description" content="Obtén tu Trial Key para usar en Roblox. Flujo guiado: elige Linkvertise o LootLabs y recibe la key tras la verificación." />
+  <meta name="description" content="Obtén tu Trial Key para usar en Roblox. Elige Linkvertise o LootLabs y recibe la key tras la verificación." />
   <meta name="theme-color" content="#0d111a" />
 </head>
 <body>
   <header class="header" role="banner">
-    <div class="brand" aria-hidden="false">
+    <div class="brand">
       <img src="assets/logo.png" alt="FloopaHub logo" class="logo" />
       <h1>FloopaHub • Key System</h1>
     </div>
@@ -25,13 +24,13 @@
   </header>
 
   <main class="container" id="main" role="main">
-    <!-- Pantalla inicial -->
+    <!-- Pantalla inicial: solo aquí está el botón Trial Key -->
     <section id="startScreen" class="card" aria-labelledby="startTitle">
       <h2 id="startTitle">Acceso disponible</h2>
 
-      <div class="grid" aria-hidden="false">
-        <article class="tile" aria-labelledby="trialTitle">
-          <h3 id="trialTitle">Trial Key</h3>
+      <div class="grid">
+        <article class="tile">
+          <h3>Trial Key</h3>
           <p>Acceso temporal para probar funciones dentro de Roblox.</p>
           <button id="btnTrial" class="btn primary" type="button" aria-controls="platformChoice">Obtener Trial Key</button>
         </article>
@@ -40,7 +39,7 @@
       <p class="note" id="startNote">La clave se usa dentro de Roblox. Aquí solo guiamos el proceso.</p>
     </section>
 
-    <!-- Elección de plataforma (oculta por defecto) -->
+    <!-- Elección de plataforma: aparece solo después de presionar Obtener Trial Key -->
     <section id="platformChoice" class="card hidden" aria-labelledby="platformTitle" aria-hidden="true">
       <h2 id="platformTitle">Elige cómo verificar</h2>
       <p class="note">Selecciona la plataforma donde completarás la verificación. Volverás aquí automáticamente cuando termines.</p>
@@ -87,7 +86,6 @@
     </div>
   </noscript>
 
-  <!-- Lógica: delega en script.js (usa la versión robusta que preparaste) -->
   <script src="script.js" defer></script>
 </body>
 </html>
