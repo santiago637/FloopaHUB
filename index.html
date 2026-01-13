@@ -4,6 +4,8 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>FloopaHub • Key System</title>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css"/>
 </head>
 <body>
@@ -17,20 +19,20 @@
 
   <main class="container">
     <section class="card">
-      <h2>Selecciona tu acceso</h2>
-      <div class="grid">
-        <div class="tile">
-          <h3>Trial Key</h3>
-          <p>Acceso temporal para probar funciones.</p>
-          <button id="btnTrial" class="btn primary">Obtener Trial Key</button>
-        </div>
-        <div class="tile">
-          <h3>Permanent Key</h3>
-          <p>Acceso completo y permanente (requiere pago).</p>
-          <button id="btnPermanent" class="btn success">Obtener Permanent Key</button>
-        </div>
+      <h2>Acceso disponible</h2>
+      <div class="tile">
+        <h3>Trial Key</h3>
+        <p>Acceso temporal para probar funciones.</p>
+        <button id="btnTrial" class="btn primary">Obtener Trial Key</button>
       </div>
       <p class="note">La clave se usa dentro de Roblox. Aquí solo guiamos el proceso.</p>
+    </section>
+
+    <!-- Selección de plataforma -->
+    <section id="platformChoice" class="card hidden">
+      <h3>Elige cómo obtener tu Trial Key</h3>
+      <button id="btnLinkvertise" class="btn option">Linkvertise</button>
+      <button id="btnLootlabs" class="btn option">LootLabs</button>
     </section>
 
     <!-- Resultado Trial Key -->
@@ -38,13 +40,6 @@
       <h3>Tu Trial Key</h3>
       <p id="trialKey" class="key-box"></p>
       <p class="note">Copia esta key y pégala en el loader de Roblox.</p>
-    </section>
-
-    <!-- Resultado Permanent Key -->
-    <section id="permResult" class="card hidden">
-      <h3>Tu Permanent Key</h3>
-      <p id="permKey" class="key-box"></p>
-      <p class="note">Ya puedes usar tu acceso permanente en Roblox.</p>
     </section>
   </main>
 
