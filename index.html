@@ -1,74 +1,93 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>FloopaHub • Key System</title>
-  <!-- Google Fonts -->
+
+  <!-- Tipografías -->
   <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css"/>
+
+  <!-- Estilos externos (tu styles.css) -->
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- Metadatos mínimos para accesibilidad y SEO -->
+  <meta name="description" content="Obtén tu Trial Key para usar en Roblox. Flujo guiado: elige Linkvertise o LootLabs y recibe la key tras la verificación." />
+  <meta name="theme-color" content="#0d111a" />
 </head>
 <body>
-  <header class="header">
-    <div class="brand">
-      <img src="assets/logo.png" alt="FloopaHub logo" class="logo"/>
+  <header class="header" role="banner">
+    <div class="brand" aria-hidden="false">
+      <img src="assets/logo.png" alt="FloopaHub logo" class="logo" />
       <h1>FloopaHub • Key System</h1>
     </div>
     <p class="subtitle">Obtén tu clave para usarla en Roblox. Flujo guiado, sin confusiones.</p>
   </header>
 
-  <main class="container">
+  <main class="container" id="main" role="main">
     <!-- Pantalla inicial -->
-    <section id="startScreen" class="card">
-      <h2>Acceso disponible</h2>
-      <div class="tile">
-        <h3>Trial Key</h3>
-        <p>Acceso temporal para probar funciones.</p>
-        <button id="btnTrial" class="btn primary">Obtener Trial Key</button>
+    <section id="startScreen" class="card" aria-labelledby="startTitle">
+      <h2 id="startTitle">Acceso disponible</h2>
+
+      <div class="grid" aria-hidden="false">
+        <article class="tile" aria-labelledby="trialTitle">
+          <h3 id="trialTitle">Trial Key</h3>
+          <p>Acceso temporal para probar funciones dentro de Roblox.</p>
+          <button id="btnTrial" class="btn primary" type="button" aria-controls="platformChoice">Obtener Trial Key</button>
+        </article>
       </div>
-      <p class="note">La clave se usa dentro de Roblox. Aquí solo guiamos el proceso.</p>
+
+      <p class="note" id="startNote">La clave se usa dentro de Roblox. Aquí solo guiamos el proceso.</p>
     </section>
 
-    <!-- Resultado Trial Key (se muestra en reemplazo) -->
-    <section id="trialResult" class="card hidden">
-      <h3>Tu Trial Key</h3>
-      <p id="trialKey" class="key-box"></p>
+    <!-- Elección de plataforma (oculta por defecto) -->
+    <section id="platformChoice" class="card hidden" aria-labelledby="platformTitle" aria-hidden="true">
+      <h2 id="platformTitle">Elige cómo verificar</h2>
+      <p class="note">Selecciona la plataforma donde completarás la verificación. Volverás aquí automáticamente cuando termines.</p>
+
+      <div class="grid" role="list">
+        <div class="tile" role="listitem">
+          <h3>Linkvertise</h3>
+          <p class="note">Completa el flujo en Linkvertise y vuelve a esta página.</p>
+          <button id="btnLinkvertise" class="btn option" type="button" aria-label="Ir a Linkvertise">Ir a Linkvertise</button>
+        </div>
+
+        <div class="tile" role="listitem">
+          <h3>LootLabs</h3>
+          <p class="note">Completa el flujo en LootLabs y vuelve a esta página.</p>
+          <button id="btnLootlabs" class="btn option" type="button" aria-label="Ir a LootLabs">Ir a LootLabs</button>
+        </div>
+      </div>
+
+      <p class="note" id="pendingNote" hidden>Si ya iniciaste el proceso, completa la verificación en la plataforma elegida y vuelve aquí.</p>
+    </section>
+
+    <!-- Resultado: se muestra solo tras verificación válida -->
+    <section id="trialResult" class="card hidden" aria-labelledby="resultTitle" aria-hidden="true">
+      <h2 id="resultTitle">Tu Trial Key</h2>
+      <p id="trialKey" class="key-box" aria-live="polite" aria-atomic="true"></p>
+
+      <div class="actions" style="margin-top:12px;">
+        <button id="btnCopyKey" class="btn primary" type="button">Copiar key</button>
+        <button id="btnDone" class="btn option" type="button">Hecho</button>
+      </div>
+
       <p class="note">Copia esta key y pégala en el loader de Roblox.</p>
     </section>
   </main>
 
-  <footer class="footer">
+  <footer class="footer" role="contentinfo">
     <small>© FloopaHub — Sistema de claves con validación en backend</small>
   </footer>
 
-  <script>
-    // Generador de key
-    function generateKey() {
-      const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-      function block(len) {
-        let out = "";
-        for (let i = 0; i < len; i++) {
-          out += chars.charAt(Math.floor(Math.random() * chars.length));
-        }
-        return out;
-      }
-      return `${block(4)}-${block(4)}-${block(4)}`;
-    }
+  <noscript>
+    <div class="card" style="margin:16px;">
+      <strong>JavaScript requerido</strong>
+      <p>Este flujo necesita JavaScript para funcionar. Activa JavaScript y vuelve a cargar la página.</p>
+    </div>
+  </noscript>
 
-    document.addEventListener("DOMContentLoaded", () => {
-      const btnTrial = document.getElementById("btnTrial");
-      const startScreen = document.getElementById("startScreen");
-      const trialResult = document.getElementById("trialResult");
-      const trialKey = document.getElementById("trialKey");
-
-      btnTrial.addEventListener("click", () => {
-        // Ocultar pantalla inicial
-        startScreen.classList.add("hidden");
-        // Mostrar resultado con la key generada
-        trialKey.textContent = generateKey();
-        trialResult.classList.remove("hidden");
-      });
-    });
-  </script>
+  <!-- Lógica: delega en script.js (usa la versión robusta que preparaste) -->
+  <script src="script.js" defer></script>
 </body>
 </html>
