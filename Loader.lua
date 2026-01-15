@@ -102,7 +102,7 @@ btnSubmit.MouseButton1Click:Connect(function()
 
     -- Paso 2: Obtener exploit con token
     local exploitRes = syn.request({
-        Url = "https://scripts-m6a8.onrender.com/exploit/get",
+        Url = "https://scripts-m6a8.onrender.com/src/exploit/get",
         Method = "GET",
         Headers = {["Authorization"] = "Bearer " .. data.token}
     })
