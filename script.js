@@ -1,5 +1,5 @@
 const LOOTLABS_LINK = "https://loot-link.com/s?2ZOQTYhc";
-const LINKVERTISE_LINK = "https://linkvertise.com/12345/floopa-key?from=linkvertise";
+const LINKVERTISE_LINK = "https://link-hub.net/3004787/vsPb5haRlXxL";
 
 const VERIFICATION_WINDOW_MS = 30 * 60 * 1000; // 30 minutos
 const LS_KEY_PENDING = "floopahub_pending_verification";
