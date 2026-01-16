@@ -1,12 +1,14 @@
 local G=getgenv()
 G.FloopaHub=G.FloopaHub or{}
-G.FloopaHub.Version="3.7"
+G.FloopaHub.Version="4.0"
 
 local H=game:GetService("HttpService")
 local P=game:GetService("Players")
 local S=game:GetService("StarterGui")
+local TS=game:GetService("TweenService")
 local L=P.LocalPlayer
 local PG=L:WaitForChild("PlayerGui")
+local Lighting=game:GetService("Lighting")
 
 local function N(m)
     pcall(function()
@@ -29,86 +31,170 @@ local function Copy(t)
     return ok
 end
 
-local UI=Instance.new("ScreenGui",PG)
+local blur=Instance.new("BlurEffect")
+blur.Size=0
+blur.Parent=Lighting
+TS:Create(blur,TweenInfo.new(0.25,Enum.EasingStyle.Quad,Enum.EasingDirection.Out),{Size=12}):Play()
+
+local UI=Instance.new("ScreenGui")
 UI.Name="FHLoader"
+UI.ResetOnSpawn=false
+UI.Parent=PG
 
-local Main=Instance.new("Frame",UI)
-Main.Size=UDim2.new(0,380,0,260)
-Main.Position=UDim2.new(0.5,-190,0.5,-130)
-Main.BackgroundColor3=Color3.fromRGB(18,18,22)
+local Main=Instance.new("Frame")
+Main.Size=UDim2.new(0,400,0,270)
+Main.Position=UDim2.new(0.5,-200,0.5,-135)
+Main.BackgroundColor3=Color3.fromRGB(12,12,18)
 Main.BorderSizePixel=0
-Instance.new("UICorner",Main).CornerRadius=UDim.new(0,12)
+Main.ClipsDescendants=true
+Main.Parent=UI
+Instance.new("UICorner",Main).CornerRadius=UDim.new(0,14)
 
-local Top=Instance.new("Frame",Main)
-Top.Size=UDim2.new(1,0,0,40)
-Top.BackgroundColor3=Color3.fromRGB(25,25,30)
+local Stroke=Instance.new("UIStroke",Main)
+Stroke.Thickness=1.2
+Stroke.Color=Color3.fromRGB(60,120,255)
+Stroke.Transparency=0.4
+
+local Top=Instance.new("Frame")
+Top.Size=UDim2.new(1,0,0,42)
+Top.BackgroundColor3=Color3.fromRGB(18,18,26)
 Top.BorderSizePixel=0
-Instance.new("UICorner",Top).CornerRadius=UDim.new(0,12)
+Top.Parent=Main
+Instance.new("UICorner",Top).CornerRadius=UDim.new(0,14)
 
-local Title=Instance.new("TextLabel",Top)
-Title.Size=UDim2.new(1,-40,1,0)
-Title.Position=UDim2.new(0,10,0,0)
+local Title=Instance.new("TextLabel")
+Title.Size=UDim2.new(1,-50,1,0)
+Title.Position=UDim2.new(0,14,0,0)
 Title.Text="Floopa Hub • Key System"
-Title.TextColor3=Color3.fromRGB(255,255,255)
+Title.TextColor3=Color3.fromRGB(235,240,255)
 Title.Font=Enum.Font.GothamBold
 Title.TextScaled=true
 Title.BackgroundTransparency=1
+Title.Parent=Top
 
-local Close=Instance.new("TextButton",Top)
+local Close=Instance.new("TextButton")
 Close.Size=UDim2.new(0,40,1,0)
 Close.Position=UDim2.new(1,-40,0,0)
-Close.Text="X"
-Close.TextColor3=Color3.fromRGB(255,80,80)
+Close.Text="×"
+Close.TextColor3=Color3.fromRGB(255,90,110)
 Close.Font=Enum.Font.GothamBold
 Close.TextScaled=true
 Close.BackgroundTransparency=1
+Close.Parent=Top
 
-local Box=Instance.new("TextBox",Main)
-Box.Size=UDim2.new(1,-20,0,45)
-Box.Position=UDim2.new(0,10,0,60)
+local Glow=Instance.new("ImageLabel")
+Glow.Size=UDim2.new(1.4,0,0,80)
+Glow.Position=UDim2.new(-0.2,0,0,38)
+Glow.BackgroundTransparency=1
+Glow.Image="rbxassetid://5028857084"
+Glow.ImageColor3=Color3.fromRGB(60,120,255)
+Glow.ImageTransparency=0.4
+Glow.Parent=Main
+
+local Box=Instance.new("TextBox")
+Box.Size=UDim2.new(1,-30,0,46)
+Box.Position=UDim2.new(0,15,0,70)
 Box.PlaceholderText="Enter your key"
-Box.TextColor3=Color3.fromRGB(220,220,220)
-Box.BackgroundColor3=Color3.fromRGB(30,30,40)
+Box.Text=""
+Box.TextColor3=Color3.fromRGB(230,230,240)
+Box.Font=Enum.Font.Gotham
+Box.TextSize=16
+Box.BackgroundColor3=Color3.fromRGB(22,22,32)
 Box.BorderSizePixel=0
 Box.ClearTextOnFocus=false
-Instance.new("UICorner",Box).CornerRadius=UDim.new(0,8)
+Box.Parent=Main
+Instance.new("UICorner",Box).CornerRadius=UDim.new(0,10)
 
-local GetKey=Instance.new("TextButton",Main)
-GetKey.Size=UDim2.new(0.5,-15,0,45)
-GetKey.Position=UDim2.new(0,10,0,120)
+local BoxStroke=Instance.new("UIStroke",Box)
+BoxStroke.Thickness=1
+BoxStroke.Color=Color3.fromRGB(80,90,120)
+BoxStroke.Transparency=0.3
+
+local GetKey=Instance.new("TextButton")
+GetKey.Size=UDim2.new(0.5,-20,0,44)
+GetKey.Position=UDim2.new(0,15,0,135)
 GetKey.Text="Get Key"
-GetKey.TextColor3=Color3.fromRGB(255,255,255)
+GetKey.TextColor3=Color3.fromRGB(240,240,255)
 GetKey.Font=Enum.Font.GothamBold
-GetKey.TextScaled=true
-GetKey.BackgroundColor3=Color3.fromRGB(40,40,55)
+GetKey.TextSize=16
+GetKey.BackgroundColor3=Color3.fromRGB(26,26,40)
 GetKey.BorderSizePixel=0
-Instance.new("UICorner",GetKey).CornerRadius=UDim.new(0,8)
+GetKey.Parent=Main
+Instance.new("UICorner",GetKey).CornerRadius=UDim.new(0,10)
 
-local Validate=Instance.new("TextButton",Main)
-Validate.Size=UDim2.new(0.5,-15,0,45)
-Validate.Position=UDim2.new(0.5,5,0,120)
+local Validate=Instance.new("TextButton")
+Validate.Size=UDim2.new(0.5,-20,0,44)
+Validate.Position=UDim2.new(0.5,5,0,135)
 Validate.Text="Validate Key"
-Validate.TextColor3=Color3.fromRGB(255,255,255)
+Validate.TextColor3=Color3.fromRGB(245,245,255)
 Validate.Font=Enum.Font.GothamBold
-Validate.TextScaled=true
-Validate.BackgroundColor3=Color3.fromRGB(0,120,200)
+Validate.TextSize=16
+Validate.BackgroundColor3=Color3.fromRGB(40,120,255)
 Validate.BorderSizePixel=0
-Instance.new("UICorner",Validate).CornerRadius=UDim.new(0,8)
+Validate.Parent=Main
+Instance.new("UICorner",Validate).CornerRadius=UDim.new(0,10)
 
-local Discord=Instance.new("TextButton",Main)
-Discord.Size=UDim2.new(1,-20,0,35)
-Discord.Position=UDim2.new(0,10,0,180)
+local Discord=Instance.new("TextButton")
+Discord.Size=UDim2.new(1,-30,0,36)
+Discord.Position=UDim2.new(0,15,0,190)
 Discord.Text="Discord Support"
-Discord.TextColor3=Color3.fromRGB(255,255,255)
+Discord.TextColor3=Color3.fromRGB(220,225,255)
 Discord.Font=Enum.Font.GothamBold
-Discord.TextScaled=true
-Discord.BackgroundColor3=Color3.fromRGB(30,30,40)
+Discord.TextSize=15
+Discord.BackgroundColor3=Color3.fromRGB(20,20,32)
 Discord.BorderSizePixel=0
-Instance.new("UICorner",Discord).CornerRadius=UDim.new(0,8)
+Discord.Parent=Main
+Instance.new("UICorner",Discord).CornerRadius=UDim.new(0,10)
 
-Close.MouseButton1Click:Connect(function()
-    UI:Destroy()
+local function Hover(btn,base,hover)
+    btn.MouseEnter:Connect(function()
+        TS:Create(btn,TweenInfo.new(0.15,Enum.EasingStyle.Quad,Enum.EasingDirection.Out),{BackgroundColor3=hover}):Play()
+    end)
+    btn.MouseLeave:Connect(function()
+        TS:Create(btn,TweenInfo.new(0.15,Enum.EasingStyle.Quad,Enum.EasingDirection.Out),{BackgroundColor3=base}):Play()
+    end)
+end
+
+Hover(GetKey,Color3.fromRGB(26,26,40),Color3.fromRGB(40,40,60))
+Hover(Validate,Color3.fromRGB(40,120,255),Color3.fromRGB(60,140,255))
+Hover(Discord,Color3.fromRGB(20,20,32),Color3.fromRGB(30,30,45))
+
+local dragging,dragStart,startPos
+Top.InputBegan:Connect(function(i)
+    if i.UserInputType==Enum.UserInputType.MouseButton1 or i.UserInputType==Enum.UserInputType.Touch then
+        dragging=true
+        dragStart=i.Position
+        startPos=Main.Position
+    end
 end)
+Top.InputEnded:Connect(function(i)
+    if i.UserInputType==Enum.UserInputType.MouseButton1 or i.UserInputType==Enum.UserInputType.Touch then
+        dragging=false
+    end
+end)
+game:GetService("UserInputService").InputChanged:Connect(function(i)
+    if dragging and (i.UserInputType==Enum.UserInputType.MouseMovement or i.UserInputType==Enum.UserInputType.Touch) then
+        local delta=i.Position-dragStart
+        Main.Position=UDim2.new(startPos.X.Scale, startPos.X.Offset+delta.X, startPos.Y.Scale, startPos.Y.Offset+delta.Y)
+    end
+end)
+
+Main.Size=UDim2.new(0,0,0,0)
+TS:Create(Main,TweenInfo.new(0.25,Enum.EasingStyle.Quad,Enum.EasingDirection.Out),{Size=UDim2.new(0,400,0,270)}):Play()
+
+local closing=false
+local function CloseUI()
+    if closing then return end
+    closing=true
+    TS:Create(Main,TweenInfo.new(0.2,Enum.EasingStyle.Quad,Enum.EasingDirection.In),{Size=UDim2.new(0,0,0,0)}):Play()
+    TS:Create(blur,TweenInfo.new(0.2,Enum.EasingStyle.Quad,Enum.EasingDirection.In),{Size=0}):Play()
+    task.delay(0.22,function()
+        blur:Destroy()
+        UI:Destroy()
+    end)
+end
+
+Close.MouseButton1Click:Connect(CloseUI)
 
 GetKey.MouseButton1Click:Connect(function()
     if Copy("https://loot-link.com/s?bwxRK29Q") then
@@ -150,7 +236,7 @@ Validate.MouseButton1Click:Connect(function()
         if ok2 and type(fn)=="function" then
             fn()
             N("Key valid. Hub loaded.")
-            UI:Destroy()
+            CloseUI()
         else
             N("Execution error.")
         end
