@@ -223,7 +223,9 @@ Validate.MouseButton1Click:Connect(function()
     if not v or not v.Body then return N("Connection error.") end
 
     local ok,data=pcall(function()return H:JSONDecode(v.Body)end)
-    if not ok or not data or not data.ok then return N("Invalid key.") end
+    if not ok or not data or not data.data or not data.data.ok then 
+    return N("Invalid key.") 
+end
 
     local ex=R({
         Url="https://scripts-m6a8.onrender.com/src/exploit/get?name=Main",
