@@ -1,4 +1,4 @@
-const LOOTLABS_LINK = "https://loot-link.com/s?uiZqdVNl";
+const LOOTLABS_LINK = "https://loot-link.com/s?2ZOQTYhc";
 const LINKVERTISE_LINK = "https://linkvertise.com/12345/floopa-key?from=linkvertise";
 
 const VERIFICATION_WINDOW_MS = 30 * 60 * 1000; // 30 minutos
