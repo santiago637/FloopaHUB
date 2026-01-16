@@ -230,7 +230,7 @@ end
     local ex=R({
         Url="https://scripts-m6a8.onrender.com/src/exploit/get?name=Main",
         Method="GET",
-        Headers={["Authorization"]="Bearer "..tostring(data.token)}
+        Headers={["Authorization"]="Bearer "..tostring(data.data.token)}
     })
 
     if ex and ex.StatusCode==200 and type(ex.Body)=="string" and #ex.Body>0 then
