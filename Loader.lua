@@ -228,15 +228,14 @@ Validate.MouseButton1Click:Connect(function()
         return N("Invalid key.")
     end
 
-    -- Clean token (remove accidental surrounding quotes) and request exploit via query param
     local token = tostring(data.data.token or "")
-    token = token:gsub('^"', ''):gsub('"$', '')
-    token = H:UrlEncode(token)
+    token = token:gsub('^"', ''):gsub('"$', '') -- si quieres, incluso esto puedes quitarlo
 
     local ex = R({
         Url = "https://scripts-m6a8.onrender.com/exploit/get?name=Main&token=" .. token,
         Method = "GET"
     })
+
 
     if ex and (ex.StatusCode == 200 or ex.status == 200) and type(ex.Body) == "string" and #ex.Body > 0 then
         local ok2, fn = pcall(loadstring, ex.Body)
