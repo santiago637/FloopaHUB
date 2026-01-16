@@ -197,7 +197,7 @@ end
 Close.MouseButton1Click:Connect(CloseUI)
 
 GetKey.MouseButton1Click:Connect(function()
-    if Copy("https://loot-link.com/s?bwxRK29Q") then
+    if Copy("https://floopahub.pages.dev/") then
         N("Link copied.")
     end
 end)
